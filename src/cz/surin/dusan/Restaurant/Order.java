@@ -21,7 +21,7 @@ public class Order {
     private static int nextOrderId= 1;
     private static Map<Integer, Order> orders = new HashMap<>();
 
-    public Order(int tableNumber, int dishId, int countDish) {
+    public Order(int tableNumber, int dishId, int countDish, boolean isPaid) {
         this.orderId = nextOrderId++;
         this.tableNumber = tableNumber;
         this.dish = CookBook.getDishById(dishId);

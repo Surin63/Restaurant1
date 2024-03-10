@@ -31,12 +31,12 @@ public class Main {
 
             throw new RuntimeException();
         }
-        order.addOrder(new Order(15, 8, 2));
-        order.addOrder(new Order(15, 2, 2));
-        order.addOrder(new Order(15, 11, 2));
-        order.addOrder(new Order(2, 7, 6));
-        order.addOrder(new Order(2, 3, 3));
-        order.addOrder(new Order(2, 4, 3));
+        order.addOrder(new Order(15, 8, 2, true));
+        order.addOrder(new Order(15, 2, 2, false));
+        order.addOrder(new Order(15, 11, 2, false));
+        order.addOrder(new Order(2, 7, 6,true));
+        order.addOrder(new Order(2, 3, 3,false));
+        order.addOrder(new Order(2, 4, 3,true));
 
     }
     private static void loadDataFromExistFiles(OrderManager orderManager) {
