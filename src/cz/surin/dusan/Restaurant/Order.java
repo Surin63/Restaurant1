@@ -15,18 +15,17 @@ public class Order {
     private Dish dish;
     private LocalDateTime orderTime;
     private LocalDateTime fulfilmentTime;
-    private boolean isPaid;
+
     private int countDish = 1;
     private static int nextBillId = 1;
     private static int nextOrderId= 1;
     private static Map<Integer, Order> orders = new HashMap<>();
 
-    public Order(int tableNumber, int dishId, int countDish, boolean isPaid) {
+    public Order(int tableNumber, int dishId, int countDish) {
         this.orderId = nextOrderId++;
         this.tableNumber = tableNumber;
         this.dish = CookBook.getDishById(dishId);
         this.orderTime = LocalDateTime.now();
-        this.isPaid = false;
         this.countDish = countDish;
         addOrder(this);
     }
@@ -76,15 +75,10 @@ public class Order {
     }
 
     public boolean isPaid() {
-        return isPaid;
+
+        return fulfilmentTime != null;
     }
 
-    public void setPaid(boolean paid) {
-        isPaid = paid;
-    }
-    public void markAsPaid() {
-        this.isPaid = true;
-    }
 
     public int getCountDish() {
         return countDish;
@@ -135,7 +129,7 @@ public class Order {
         if (fulfilmentTime != null) {
             description.append(fulfilmentTime.format(DateTimeFormatter.ofPattern("HH:mm"))).append("\t");
         }
-        description.append(isPaid ? "Zaplaceno" : "");
+        description.append(isPaid() ? "Zaplaceno" : "");
         return description.toString();
     }
 
@@ -163,22 +157,6 @@ public class Order {
         }
     }
 
-    public void setPaidForOrder(int orderId) throws DishException {
-        Order order = getOrderById(orderId);
-        try {
-            if (order != null) {
-                if ( order.getFulfilmentTime() != null) {
-                    order.markAsPaid();
-                } else {
-                    throw new DishException("Objednavka s Id " + orderId + " nebyla vybavena, a proto nemuze byt oznacena jako zaplacena.");
-                }
-            } else {
-                throw new DishException("Objednavka s Id " + orderId + " neexistuje.");
-            }
-        }catch (Exception e) {
-            throw new DishException("Chyba pri placeni objednavky: " + e.getMessage());
-        }
-    }
 
     public void setFulfilmentTimeForOrder(int orderId) {
         Order order = getOrderById(orderId);
@@ -211,7 +189,6 @@ public class Order {
                 ", dish=" + dish +
                 ", orderTime=" + orderTime +
                 ", fulfilmentTime=" + fulfilmentTime +
-                ", isPaid=" + isPaid +
                 ", countDish=" + countDish +
                 '}';
     }
